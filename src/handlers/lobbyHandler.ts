@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 
-import { ERROR_CONSTANTS, GAME_MAX_PLAYER_LIMIT, validGames } from "../utils/constants";
+import { ERROR_CONSTANTS, validGames } from "../utils/constants";
 import {
   createLobbyPayload,
   emitError,
