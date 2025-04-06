@@ -101,7 +101,7 @@ const destroyLobby = (lobbyId: string) => {
   const lobby = lobbiesMap.get(lobbyId);
   if (!lobby) return;
 
-  for (const player of lobby.players) {
+  for (const player of [...lobby.players]) {
     leaveLobby(userSockets.get(player.id)!, lobbyId);
   }
 };
