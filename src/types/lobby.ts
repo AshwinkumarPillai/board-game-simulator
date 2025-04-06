@@ -1,9 +1,9 @@
-import { emit } from "node:process";
 import { ServerStateManager } from "../core/ServerStateManager";
 import { userDataMap, userSockets } from "../core/state";
 import { ERROR_CONSTANTS, GAME_MAX_PLAYER_LIMIT } from "../utils/constants";
 import { BaseGamePlayer, GameStatus, GameType, Spectator } from "./types";
 import { emitError } from "../utils/socket.utils";
+import { v4 as uuidv4 } from "uuid";
 
 export class Lobby {
   id: string;
@@ -16,7 +16,7 @@ export class Lobby {
   gameStatus: GameStatus;
 
   constructor(player: BaseGamePlayer, gameType: GameType, maxPlayerLimit: number) {
-    this.id = `lobby-${Date.now()}`;
+    this.id = `lobby-${uuidv4()}`;
     this.ownerId = player.id;
     this.players = [player];
     this.spectators = [];

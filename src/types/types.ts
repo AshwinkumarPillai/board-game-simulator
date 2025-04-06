@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { v4 as uuidv4 } from "uuid";
 
 export interface Route {
   (req: Request, res: Response): void;
@@ -32,7 +33,7 @@ export abstract class BaseGame<TPlayer extends BaseGamePlayer> {
   phase: string;
 
   constructor(name: GameType, lobbyId: string) {
-    this.id = `game${Date.now()}`;
+    this.id = `game-${uuidv4()}`;
     this.name = name;
     this.lobbyId = lobbyId;
     this.players = [];
