@@ -1,4 +1,4 @@
-import { Server, Socket } from "socket.io";
+import { Socket } from "socket.io";
 
 import { ERROR_CONSTANTS, GAME_MAX_PLAYER_LIMIT, validGames } from "../utils/constants";
 import {

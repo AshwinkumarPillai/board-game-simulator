@@ -2,7 +2,7 @@ import { JwtPayload } from "jsonwebtoken";
 import { Socket, ExtendedError } from "socket.io";
 import { verifyJWTToken } from "../utils/jwt";
 import { ServerStateManager } from "../core/ServerStateManager";
-import { lobbiesMap, userDataMap, userLobbyMap } from "../core/state";
+import { userDataMap, userLobbyMap } from "../core/state";
 import { leaveLobby } from "./lobbyHandler";
 
 export const handleAuthentication = (socket: Socket, next: (err?: ExtendedError) => void) => {
