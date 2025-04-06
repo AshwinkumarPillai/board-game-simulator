@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 
 import { generateToken } from "../utils/jwt";
 import { User } from "../models/user.model";
-import { Route } from "../utils/types";
+import { Route } from "../types/types";
 
 // Register User
 export const registerUser: Route = async (req: Request, res: Response) => {
@@ -21,7 +21,7 @@ export const registerUser: Route = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({ username, password: hashedPassword });
 
-    const token = generateToken(user._id.toString());
+    const token = generateToken(user._id.toString(), user.username);
 
     return res.status(200).json({ user: { id: user._id, username: user.username }, token });
   } catch (error) {
@@ -48,7 +48,7 @@ export const loginUser: Route = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = generateToken(user._id.toString());
+    const token = generateToken(user._id.toString(), user.username);
 
     return res.status(200).json({ user: { id: user._id, username: user.username }, token });
   } catch (error) {
