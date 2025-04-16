@@ -8,7 +8,7 @@ import { useUser } from "@/context/UserContext";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { motion } from "framer-motion";
 
-const page = () => {
+const LobbyPage = () => {
   const { lobbyData } = useLobby();
   const { socket, joinLobby, leaveLobby, startLobbyGame } = useSocket();
   const { lobbyId } = useParams();
@@ -153,4 +153,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default LobbyPage;

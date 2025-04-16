@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-const page = () => {
+const CreateLobbyPage = () => {
   const { createLobby, checkIfUserIsInAnyLobby } = useSocket();
 
   const { lobbyData } = useLobby();
@@ -30,7 +30,7 @@ const page = () => {
     }
 
     checkIfUserIsInAnyLobby(true);
-  }, [lobbyData]);
+  }, [lobbyData, checkIfUserIsInAnyLobby]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
@@ -69,4 +69,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default CreateLobbyPage;

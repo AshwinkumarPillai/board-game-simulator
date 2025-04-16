@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 
 import { Layers, UserCheck } from "lucide-react";
 
-const page = () => {
+const GamePage = () => {
   const { blackJackGameData, lobbyData } = useLobby();
   const { checkIfUserIsInAnyLobby, placeBet, performPlayerAction, blackJackStartNextRound } = useSocket();
   const [playerBet, setPlayerBet] = useState(4);
@@ -24,8 +24,6 @@ const page = () => {
       checkIfUserIsInAnyLobby();
       return;
     }
-    console.log(lobbyData);
-    console.log(blackJackGameData);
     setPlayerBet(blackJackGameData.minBet);
   }, [blackJackGameData, lobbyData]);
 
@@ -150,7 +148,7 @@ const page = () => {
                         <CardImage card={blackJackGameData.dealerHand[0]} />
                       </span>
                       <span
-                        key={`dealer-card-0`}
+                        key={`dealer-card-1`}
                         className="w-[96px] h-[128px] rounded-lg shadow-md transition-transform hover:-translate-y-[4px] duration-[300ms]"
                       >
                         <img src="/card_back.svg" alt="second_dealer_card" />
@@ -184,4 +182,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default GamePage;
