@@ -1,9 +1,18 @@
 import { Socket } from "socket.io";
-import { lobbiesMap, userDataMap, userLobbyMap, userSockets } from "./state";
+import {
+  blackJackGamesMap,
+  gameTypeMap,
+  lobbiesMap,
+  pokerGamesMap,
+  userDataMap,
+  userLobbyMap,
+  userSockets,
+} from "./state";
 import { BaseGamePlayer } from "../types/types";
 import { Lobby } from "../types/lobby";
 import { ERROR_CONSTANTS } from "../utils/constants";
 import chalk from "chalk";
+import { BlackJackGame } from "../games/blackjack/BlackJackGame";
 
 export class ServerStateManager {
   static addUserToServer(user: BaseGamePlayer, socket: Socket) {
@@ -27,6 +36,7 @@ export class ServerStateManager {
   }
 
   static removeLobbyFromServer(lobbyId: string) {
+    this.removeGameFromServer(lobbyId);
     lobbiesMap.delete(lobbyId);
     console.log(`[Lobby Deleted] ${lobbyId} - Empty`);
     this.printSummary();
@@ -50,11 +60,30 @@ export class ServerStateManager {
     this.printSummary();
   }
 
+  static removeGameFromServer(lobbyId: string) {
+    const lobby = lobbiesMap.get(lobbyId);
+    if (lobby) {
+      switch (gameTypeMap.get(lobby.gameId as string)) {
+        case "blackjack":
+          blackJackGamesMap.delete(lobby.gameId as string);
+          break;
+        case "poker":
+          pokerGamesMap.delete(lobby.gameId as string);
+          break;
+        default:
+          break;
+      }
+
+      const game = blackJackGamesMap.get(lobby?.gameId as string);
+      if (game) blackJackGamesMap.delete(game.id);
+    }
+  }
+
   static printSummary() {
     console.log("");
-    console.log(chalk.gray("—".repeat(100)));
+    console.log(chalk.gray("—".repeat(150)));
     console.log(chalk.bold.cyan("Server Summary:"));
-    console.log(chalk.gray("—".repeat(100)));
+    console.log(chalk.gray("—".repeat(150)));
 
     console.log(chalk.green(`Active Users: ${userSockets.size}`));
     console.log(chalk.yellow(`Active Lobbies: ${lobbiesMap.size}`));
@@ -65,11 +94,41 @@ export class ServerStateManager {
           chalk.magenta(` [${lobby.gameType}] `) +
           chalk.white(`${lobby.players.length}/${lobby.maxPlayerLimit}`) +
           chalk.gray(` | spectators: ${lobby.spectators.length}`) +
-          chalk.gray(` | players: [ ${lobby.players.map((p) => p.username).join(", ")} ]`)
+          chalk.blueBright(` | players: [ ${lobby.players.map((p) => p.username).join(", ")} ]`) +
+          chalk.white(` | spectators: [ ${lobby.spectators.map((p) => p.username).join(", ")} ]`) +
+          chalk.red(
+            ` | InActive players: [ ${lobby.players
+              .filter((p) => p.status === "inactive")
+              .map((p) => p.username)
+              .join(", ")} ]`
+          )
       );
     }
 
-    console.log(chalk.gray("—".repeat(100)));
+    console.log(chalk.yellow(`Active Games: ${blackJackGamesMap.size + pokerGamesMap.size}`));
+    if (blackJackGamesMap.size + pokerGamesMap.size === 0) {
+      console.log(chalk.gray("—".repeat(150)));
+      console.log("");
+      return;
+    }
+    // Games Data Log
+    console.log(chalk.bgCyan(` BlackJack Games: ${blackJackGamesMap.size}   `));
+    for (const [gameId, game] of blackJackGamesMap.entries()) {
+      console.log(chalk.blue(`   - ${gameId}`) + chalk.magenta(`  Game:  [${game.name}] `));
+    }
+
+    console.log(chalk.bgCyan(` Poker Games: ${pokerGamesMap.size}  `));
+    for (const [gameId, game] of pokerGamesMap.entries()) {
+      console.log(chalk.blue(`   - ${gameId}`) + chalk.magenta(`  Game:  [${game.name}] `));
+    }
+    console.log(chalk.gray("—".repeat(150)));
     console.log("");
+  }
+
+  static addBlackJackGameToServer(game: BlackJackGame) {
+    blackJackGamesMap.set(game.id, game);
+    gameTypeMap.set(game.id, "blackjack");
+    console.log(`[Game Started] [${game.id}] - ${game.name} in lobby:  ${game.lobbyId}`);
+    this.printSummary();
   }
 }
