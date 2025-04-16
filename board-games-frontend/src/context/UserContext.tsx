@@ -12,6 +12,7 @@ type UserContextType = {
   setUserData: React.Dispatch<React.SetStateAction<User | null>>;
   logout: () => void;
   isLoading: boolean;
+  pingStarted: boolean;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -20,10 +21,18 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [userData, setUserData] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [pingStarted, setPingStarted] = useState(false);
+
   const router = useRouter();
 
+  const handlePingServer = async () => {
+    setPingStarted(true);
+    await pingServer();
+    setPingStarted(false);
+  };
+
   useEffect(() => {
-    pingServer();
+    handlePingServer();
     setIsLoading(true);
     const stored = localStorage.getItem("userData");
     if (stored) {
@@ -41,7 +50,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <UserContext.Provider value={{ userData, setUserData, logout, isLoading }}>
+    <UserContext.Provider value={{ userData, setUserData, logout, isLoading, pingStarted }}>
       {children}
     </UserContext.Provider>
   );
