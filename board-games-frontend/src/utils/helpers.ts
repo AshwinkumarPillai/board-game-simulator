@@ -1,4 +1,4 @@
-import { Card } from "@/types/types";
+import { Card, ErrorResponse } from "@/types/types";
 
 export const calculateHandValue = (hand: Card[]): number => {
   let total = 0;
@@ -24,4 +24,18 @@ export const calculateHandValue = (hand: Card[]): number => {
   }
 
   return best;
+};
+
+export const isErrorResponse = (error: unknown): error is ErrorResponse => {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "response" in error &&
+    typeof error.response === "object" &&
+    error.response !== null &&
+    "data" in error.response &&
+    typeof error.response.data === "object" &&
+    error.response.data !== null &&
+    "message" in error.response.data
+  );
 };
