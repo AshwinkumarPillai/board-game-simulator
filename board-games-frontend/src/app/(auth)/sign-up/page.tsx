@@ -14,6 +14,7 @@ export default function SignupPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [registerClicked, setRegisterClicked] = useState(false);
 
   useEffect(() => {
     if (!isLoading && userData) router.push("/");
@@ -21,6 +22,7 @@ export default function SignupPage() {
 
   const handleSignup = async () => {
     try {
+      setRegisterClicked(true);
       const data = await registerUser(username, password);
       setCookie("token", data.token);
       localStorage.setItem("userData", JSON.stringify(data.user));
@@ -32,6 +34,8 @@ export default function SignupPage() {
       } else {
         setErrorMessage("Signup failed");
       }
+    } finally {
+      setRegisterClicked(false);
     }
   };
 
@@ -79,9 +83,10 @@ export default function SignupPage() {
         </div>
         <button
           onClick={handleSignup}
+          disabled={registerClicked}
           className="w-full py-2 bg-green-600 rounded-lg hover:bg-green-700 transition-transform transform hover:-translate-y-1"
         >
-          Sign Up
+          {registerClicked ? <LoadingSpinner /> : "Sign Up"}
         </button>
       </motion.div>
     </div>
