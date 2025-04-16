@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { initializeSocket, disconnectSocket } from "@/lib/socket";
+import { initializeSocket, disconnectSocket } from "@/api/socket";
 import { useUser } from "./UserContext";
 import { Socket } from "socket.io-client";
 import { getCookie } from "cookies-next";

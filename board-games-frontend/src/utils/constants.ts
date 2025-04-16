@@ -11,3 +11,5 @@ export const ERROR_CONSTANTS = {
   GAME_INVALID_ACTION: "Invalid player action",
   INVALID_TOKEN: "Authentication error: Invalid token",
 };
+
+export const BACKEND_URL = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5002";

@@ -1,8 +1,7 @@
+import { BACKEND_URL } from "@/utils/constants";
 import axios from "axios";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5002";
-
-const USER_ROUTE = API_BASE_URL + "/api/user";
+const USER_ROUTE = BACKEND_URL + "/api/user";
 
 export const loginUser = async (username: string, password: string) => {
   try {
@@ -16,6 +15,15 @@ export const loginUser = async (username: string, password: string) => {
 export const registerUser = async (username: string, password: string) => {
   try {
     const response = await axios.post(`${USER_ROUTE}/register`, { username, password });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const pingServer = async () => {
+  try {
+    const response = await axios.get(`${BACKEND_URL}/ping`);
     return response.data;
   } catch (error) {
     console.error(error);
