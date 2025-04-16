@@ -20,17 +20,3 @@ export const validatePayloads = (socket: Socket, payloads: Record<string, any>):
   }
   return true;
 };
-
-// All Socket payload interfaces
-export interface createLobbyPayload {
-  maxPlayerLimit: number;
-  game: GameType;
-}
-
-export interface joinLobbyPayload {
-  lobbyId: string;
-}
-
-export interface leaveLobbyPayload {
-  lobbyId: string;
-}

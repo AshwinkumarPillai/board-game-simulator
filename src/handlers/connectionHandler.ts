@@ -4,11 +4,12 @@ import { verifyJWTToken } from "../utils/jwt";
 import { ServerStateManager } from "../core/ServerStateManager";
 import { userDataMap, userLobbyMap } from "../core/state";
 import { leaveLobby } from "./lobbyHandler";
+import { ERROR_CONSTANTS } from "../utils/constants";
 
 export const handleAuthentication = (socket: Socket, next: (err?: ExtendedError) => void) => {
   const token: string = Array.isArray(socket.handshake.headers.access_token)
     ? socket.handshake.headers.access_token[0]
-    : socket.handshake.headers.access_token || "";
+    : socket.handshake.headers.access_token || socket.handshake.auth.token;
 
   if (!token) {
     return next(new Error("Authentication error: No token provided"));
@@ -18,7 +19,7 @@ export const handleAuthentication = (socket: Socket, next: (err?: ExtendedError)
     const decoded: JwtPayload | null = verifyJWTToken(token);
 
     if (!decoded || !decoded.id) {
-      return next(new Error("Authentication error: Invalid token payload"));
+      return next(new Error(ERROR_CONSTANTS.INVALID_TOKEN));
     }
 
     socket.data.userId = decoded.id;
@@ -32,7 +33,7 @@ export const handleAuthentication = (socket: Socket, next: (err?: ExtendedError)
     next();
   } catch (err) {
     console.error("JWT Verification Error:", err);
-    return next(new Error("Authentication error: Invalid token"));
+    return next(new Error(ERROR_CONSTANTS.INVALID_TOKEN));
   }
 };
 
