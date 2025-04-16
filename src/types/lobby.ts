@@ -1,9 +1,9 @@
 import { ServerStateManager } from "../core/ServerStateManager";
-import { userDataMap, userSockets } from "../core/state";
+import { userDataMap, userLobbyMap } from "../core/state";
 import { ERROR_CONSTANTS, GAME_MAX_PLAYER_LIMIT } from "../utils/constants";
 import { BaseGamePlayer, GameStatus, GameType, Spectator } from "./types";
-import { emitError } from "../utils/socket.utils";
 import { v4 as uuidv4 } from "uuid";
+import { BlackJackGame } from "../games/blackjack/BlackJackGame";
 
 export class Lobby {
   id: string;
@@ -14,6 +14,7 @@ export class Lobby {
   gameType: GameType;
   createdAt: number;
   gameStatus: GameStatus;
+  gameId: string | null = null;
 
   constructor(player: BaseGamePlayer, gameType: GameType, maxPlayerLimit: number) {
     this.id = `lobby-${uuidv4()}`;
@@ -29,12 +30,29 @@ export class Lobby {
     ServerStateManager.addPlayerToLobby(player, this.id);
   }
 
+  createGameInstance(params: any[]) {
+    if (this.gameType === "blackjack") {
+      const game = BlackJackGame.create(
+        this.players.map((p) => ({ id: p.id, username: p.username })),
+        this.id,
+        params[0] // numDecks
+      );
+      return game;
+    }
+  }
+
+  // This is not a good way because each game will have different starting parameters (but for now this will do (sigh!))
+  startGame(numDecks = 6) {
+    this.gameStatus = "in-progress";
+    const game = this.createGameInstance([numDecks]);
+    if (game) this.gameId = game.id;
+    return game;
+  }
+
   addPlayer(player: BaseGamePlayer) {
     if (this.gameStatus === "lobby") {
-      if (this.isFull()) {
-        emitError(userSockets.get(player.id)!, ERROR_CONSTANTS.LOBBY_FULL);
-        return;
-      }
+      if (userLobbyMap.has(player.id) && userLobbyMap.get(player.id) === this.id) return;
+      if (this.isFull()) throw new Error(ERROR_CONSTANTS.LOBBY_FULL);
 
       if (this.players.find((p) => p.id === player.id)) return;
       this.players.push(player);
@@ -42,7 +60,8 @@ export class Lobby {
     } else {
       if (this.players.find((p) => p.id === player.id)) {
         this.setPlayerStatusInLobby(player.id, "active");
-        console.log(`Player ${player.username} joined lobby ${this.id} - [${this.gameType}]`);
+        console.log(`Player ${player.username} re-joined game ${this.id} - [${this.gameType}]`);
+        ServerStateManager.printSummary();
       } else {
         this.addSpectator(player);
         ServerStateManager.addPlayerToLobby(player, this.id);
@@ -51,13 +70,14 @@ export class Lobby {
   }
 
   removePlayer(playerId: string) {
-    if (this.gameStatus === "lobby") {
+    if (this.gameStatus === "lobby" || this.gameStatus === "finished") {
       this.players = this.players.filter((p) => p.id !== playerId);
       ServerStateManager.removePlayerFromLobbyMap(userDataMap.get(playerId)!);
     } else {
       if (this.players.find((p) => p.id === playerId)) {
         this.setPlayerStatusInLobby(playerId, "inactive");
-        console.log(`Player ${playerId} left lobby ${this.id} - [${this.gameType}]`);
+        console.log(`Player ${playerId} left the game ${this.id} - [${this.gameType}]`);
+        ServerStateManager.printSummary();
       } else {
         this.removeSpectator(playerId);
         ServerStateManager.removePlayerFromLobbyMap(userDataMap.get(playerId)!);
@@ -75,7 +95,10 @@ export class Lobby {
 
   setPlayerStatusInLobby(playerId: string, status: "active" | "inactive") {
     this.players = this.players.map((p) => {
-      if (p.id === playerId) return { ...p, status };
+      if (p.id === playerId) {
+        userDataMap.get(playerId)!.status = status;
+        return { ...p, status };
+      }
       return p;
     });
   }
