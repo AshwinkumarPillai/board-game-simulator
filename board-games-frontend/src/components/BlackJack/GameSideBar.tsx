@@ -2,7 +2,7 @@
 import { useLobby } from "@/context/LobbyContext";
 import { useUser } from "@/context/UserContext";
 import { BlackJackGame } from "@/types/types";
-import React from "react";
+import React, { useState } from "react";
 
 interface GameSideBarProps {
   blackJackGameData: BlackJackGame;
@@ -11,9 +11,36 @@ interface GameSideBarProps {
 const GameSideBar: React.FC<GameSideBarProps> = ({ blackJackGameData }) => {
   const { userData } = useUser();
   const { lobbyData } = useLobby();
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    const fullUrl = `${window.location.origin}/blackjack/${blackJackGameData.lobbyId}`;
+    navigator.clipboard.writeText(fullUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="bg-gray-800 text-white p-6 h-full overflow-y-auto shadow-lg">
+      {/* Copy Lobby Link */}
+      <h2 className="font-bold text-xl mb-4 text-center">Share Game</h2>
+      <div className="flex items-center gap-2 mb-6 justify-center">
+        <input
+          type="text"
+          value={`${window.location.origin}/blackjack/${blackJackGameData.lobbyId}`}
+          readOnly
+          className="border px-4 py-2 rounded-lg w-full max-w-md text-sm text-white bg-gray-700"
+        />
+        <button
+          onClick={handleCopy}
+          className={`px-4 py-2 rounded-lg text-sm cursor-pointer ${
+            copied ? "bg-green-600" : "bg-blue-600 hover:bg-blue-700"
+          } transition-transform transform hover:-translate-y-1`}
+        >
+          {copied ? "Copied!" : "Copy"}
+        </button>
+      </div>
+
       {/* Game Info */}
       <div className="mb-8 text-center bg-gradient-to-r from-gray-800/30 to-gray-900/30 p-2 rounded-xl shadow-lg">
         <h2 className="text-xl font-bold text-white">Blackjack Game</h2>
@@ -72,7 +99,7 @@ const GameSideBar: React.FC<GameSideBarProps> = ({ blackJackGameData }) => {
 
       {/* Current Player Info */}
       <div className="mt-8 p-4 bg-gray-700 rounded-lg shadow-md">
-        <h4 className="text-lg font-semibold mb-2">Current Player</h4>
+        <h4 className="text-lg font-semibold mb-2 text-pink-600">Current Player</h4>
         <p>
           {blackJackGameData.players[blackJackGameData.currentPlayerIndex]?.username || "N/A"}
           {blackJackGameData.players[blackJackGameData.currentPlayerIndex]?.id === userData?.id && (
@@ -80,49 +107,20 @@ const GameSideBar: React.FC<GameSideBarProps> = ({ blackJackGameData }) => {
           )}
         </p>
       </div>
+
+      <br />
+      <hr />
+      {/* Spectators */}
+      <div className="mt-8 p-4 bg-gray-700 rounded-lg shadow-md">
+        <h4 className="text-lg font-semibold mb-2 text-amber-200">Spectators</h4>
+        {lobbyData?.spectators?.map((spectator, index) => (
+          <p>
+            {spectator?.username || "N/A"}
+            {spectator?.id === userData?.id && <span className="text-blue-300"> (You)</span>}
+          </p>
+        ))}
+      </div>
     </div>
-    // <div className="w-1/4 p-6 bg-gray-800 h-full">
-    //   <h3 className="text-xl font-semibold mb-4">Players</h3>
-    //   {blackJackGameData.players.map((player, index) => (
-    //     <div
-    //       key={player.id}
-    //       className={`mb-4 p-4 rounded-md border ${
-    //         index === blackJackGameData.currentPlayerIndex ? "bg-green-600" : "bg-gray-700"
-    //       } border-gray-500`}
-    //     >
-    //       <div className="font-bold">
-    //         {player.username}{" "}
-    //         {player.id === userData?.id && (
-    //           <span>
-    //             {" "}
-    //             | <strong>(You)</strong>
-    //           </span>
-    //         )}
-    //         {lobbyData && lobbyData.players.find((p) => p.id === player.id)?.status === "inactive" && (
-    //           <span className="text-red-500 bg-white px-3 py-1">
-    //             <strong>[INACTIVE]</strong>
-    //           </span>
-    //         )}
-    //         {player.isEliminated && (
-    //           <span className="text-red-500 bg-white px-3 py-1">
-    //             <strong>[ELIMINATED]</strong>
-    //           </span>
-    //         )}
-    //       </div>
-    //       <div>Points: {player.points}</div>
-    //       <div>Current Bet: {player.currentBet}</div>
-    //     </div>
-    //   ))}
-    //   <div className="mt-6">
-    //     <div>
-    //       <strong>Current Player:</strong>{" "}
-    //       {blackJackGameData.players[blackJackGameData.currentPlayerIndex]?.username || "N/A"}
-    //       {blackJackGameData.players[blackJackGameData.currentPlayerIndex]?.id === userData?.id && (
-    //         <h4>(You)</h4>
-    //       )}
-    //     </div>
-    //   </div>
-    // </div>
   );
 };
 
