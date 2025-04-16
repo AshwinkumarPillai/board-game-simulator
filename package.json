@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix board-games-backend\" \"npm run dev --prefix board-games-frontend\"",
-    "build": "concurrently \"npm run build --prefix board-games-frontend\"",
+    "build": "concurrently \"npm run build --prefix board-games-backend\" \"npm run build --prefix board-games-frontend\"",
     "start": "concurrently \"npm start --prefix board-games-backend\" \"npm start --prefix board-games-frontend\""
   },
   "devDependencies": {

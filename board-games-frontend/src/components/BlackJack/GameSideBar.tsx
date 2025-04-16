@@ -114,7 +114,7 @@ const GameSideBar: React.FC<GameSideBarProps> = ({ blackJackGameData }) => {
       <div className="mt-8 p-4 bg-gray-700 rounded-lg shadow-md">
         <h4 className="text-lg font-semibold mb-2 text-amber-200">Spectators</h4>
         {lobbyData?.spectators?.map((spectator, index) => (
-          <p>
+          <p key={"spectator-" + index}>
             {spectator?.username || "N/A"}
             {spectator?.id === userData?.id && <span className="text-blue-300"> (You)</span>}
           </p>
