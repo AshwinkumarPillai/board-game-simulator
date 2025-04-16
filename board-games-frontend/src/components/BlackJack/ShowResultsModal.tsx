@@ -37,7 +37,7 @@ const ShowResultsModal: React.FC<ShowResultsProps> = ({
         </button>
 
         <h2 className="text-2xl font-semibold mb-4 text-center">
-          {isGameOver ? "Game Over" : `Round ${blackJackGameData.round} Results`}
+          {isGameOver ? "Game Over" : `Round ${blackJackGameData.round - 1} Results`}
         </h2>
 
         <div className="overflow-x-auto">
