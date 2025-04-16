@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = process.env.BACKEND_BASE_URL || "http://localhost:5002";
+const API_BASE_URL = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5002";
 
 const USER_ROUTE = API_BASE_URL + "/api/user";
 
