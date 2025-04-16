@@ -17,8 +17,9 @@ app.use(express.json());
 // Routes
 app.get("/ping", (req: Request, res: Response) => {
   console.log("Server Pinged");
-  res.status(200).json("Ping");
+  res.status(200).json("Ping received at the server");
 });
+
 app.use("/api/user", authRoutes);
 
 const httpServer = createServer(app);
