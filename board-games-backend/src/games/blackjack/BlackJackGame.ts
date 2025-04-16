@@ -110,8 +110,9 @@ export class BlackJackGame extends BaseGame {
   setCurrentPlayer() {
     this.currentPlayerIndex = 0;
     while (
-      this.players[this.currentPlayerIndex]?.isEliminated &&
-      (this.players[this.currentPlayerIndex]?.isBusted || this.players[this.currentPlayerIndex]?.isStanding)
+      this.players[this.currentPlayerIndex]?.isEliminated ||
+      this.players[this.currentPlayerIndex]?.isBusted ||
+      this.players[this.currentPlayerIndex]?.isStanding
     ) {
       this.currentPlayerIndex++;
     }
