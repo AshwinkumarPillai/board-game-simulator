@@ -1,5 +1,6 @@
 "use client";
 import { Card } from "@/types/types";
+import Image from "next/image";
 import React from "react";
 
 interface CardImageProps {
@@ -7,7 +8,14 @@ interface CardImageProps {
 }
 
 const CardImage: React.FC<CardImageProps> = ({ card }) => {
-  return <img src={`/cards/${card.suit}_${card.value}.svg`} alt={card.suit + card.value} />;
+  return (
+    <Image
+      src={`/cards/${card.suit}_${card.value}.svg`}
+      alt={card.suit + card.value}
+      width={96}
+      height={128}
+    />
+  );
 };
 
 export default CardImage;
