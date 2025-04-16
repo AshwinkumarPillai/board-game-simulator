@@ -83,8 +83,8 @@ const PlayerActions: React.FC<PlayerActionsProps> = ({
                 <span className="text-lg font-medium">Moving to next round in a few seconds</span>
               ) : (
                 <span className="text-lg font-medium">
-                  Waiting for {blackJackGameData.players[blackJackGameData.currentPlayerIndex]?.username}'s
-                  turn...
+                  Waiting for {blackJackGameData.players[blackJackGameData.currentPlayerIndex]?.username}
+                  &apos;s turn...
                 </span>
               )}
             </div>

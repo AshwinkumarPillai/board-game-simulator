@@ -48,8 +48,8 @@ export default function HomePage() {
             to continue.
           </p>
           <p className="text-sm text-gray-400">
-            We don't need your email or any other personal information. You&apos;ll only need a username and
-            password to create an account for free.
+            We don&apos;t need your email or any other personal information. You&apos;ll only need a username
+            and password to create an account for free.
           </p>
           <p className="mt-4 text-sm text-gray-400">
             We do not store or sell any information about you. (This is just a fun project!)
