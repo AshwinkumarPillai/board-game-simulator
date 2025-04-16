@@ -6,6 +6,7 @@ import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { isErrorResponse } from "@/utils/helpers";
 
 export default function LoginPage() {
   const { isLoading, userData, setUserData } = useUser();
@@ -16,7 +17,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!isLoading && userData) router.push("/");
-  }, [isLoading, userData]);
+  }, [isLoading, userData, router]);
 
   const handleLogin = async () => {
     try {
@@ -25,8 +26,12 @@ export default function LoginPage() {
       localStorage.setItem("userData", JSON.stringify(data.user));
       setUserData(data.user);
       router.push("/");
-    } catch (err: any) {
-      setErrorMessage(err.response?.data?.message || "Login failed");
+    } catch (err: unknown) {
+      if (isErrorResponse(err)) {
+        setErrorMessage(err.response.data.message);
+      } else {
+        setErrorMessage("Login failed");
+      }
     }
   };
 
