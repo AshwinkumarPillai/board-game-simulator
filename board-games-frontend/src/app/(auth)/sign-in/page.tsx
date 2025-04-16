@@ -14,6 +14,7 @@ export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loginClicked, setLoginClicked] = useState(false);
 
   useEffect(() => {
     if (!isLoading && userData) router.push("/");
@@ -21,6 +22,7 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     try {
+      setLoginClicked(true);
       const data = await loginUser(username, password);
       setCookie("token", data.token);
       localStorage.setItem("userData", JSON.stringify(data.user));
@@ -32,6 +34,8 @@ export default function LoginPage() {
       } else {
         setErrorMessage("Login failed");
       }
+    } finally {
+      setLoginClicked(false);
     }
   };
 
@@ -79,9 +83,10 @@ export default function LoginPage() {
         </div>
         <button
           onClick={handleLogin}
+          disabled={loginClicked}
           className="w-full py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-transform transform hover:-translate-y-1"
         >
-          Login
+          {loginClicked ? <LoadingSpinner /> : "Login"}
         </button>
       </motion.div>
     </div>
