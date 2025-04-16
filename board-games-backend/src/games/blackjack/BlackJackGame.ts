@@ -130,7 +130,9 @@ export class BlackJackGame extends BaseGame {
       }
     } while (
       this.currentPlayerIndex < this.players.length &&
-      this.players[this.currentPlayerIndex].isEliminated
+      (this.players[this.currentPlayerIndex].isEliminated ||
+        this.players[this.currentPlayerIndex].isBusted ||
+        this.players[this.currentPlayerIndex].isStanding)
     );
   }
 
