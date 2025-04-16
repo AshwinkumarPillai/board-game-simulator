@@ -202,7 +202,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (errorObj.message === ERROR_CONSTANTS.LOBBY_NOT_FOUND) {
       alert(errorObj.message);
-      handleLobbyAndOrGameExists(errorObj.payload?.lobby, errorObj.payload?.game);
+      handleLobbyAndOrGameExists(errorObj.payload?.lobby as Lobby, errorObj.payload?.game as Game);
     } else if (
       errorObj.message === ERROR_CONSTANTS.GAME_ALREADY_STARTED ||
       errorObj.message === ERROR_CONSTANTS.LOBBY_EXISTS ||
@@ -211,7 +211,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       errorObj.message === ERROR_CONSTANTS.GAME_INVALID_ACTION
     ) {
       if (errorObj.payload?.game) {
-        handleLobbyAndOrGameExists(errorObj.payload?.lobby, errorObj.payload?.game);
+        handleLobbyAndOrGameExists(errorObj.payload?.lobby as Lobby, errorObj.payload?.game as Game);
       }
     } else if (errorObj.message === ERROR_CONSTANTS.LOBBY_FULL) {
       alert(errorObj.message);

@@ -1,3 +1,11 @@
+export interface ErrorResponse {
+  response: {
+    data: {
+      message: string;
+    };
+  };
+}
+
 export type User = {
   id: string;
   username: string;
@@ -100,7 +108,10 @@ export interface startLobbyGamePayload {
 
 export interface socketDataError {
   message: string;
-  payload?: any;
+  payload?: {
+    lobby?: Lobby;
+    game?: Game;
+  };
 }
 
 export interface blackJackBet {
