@@ -1,6 +1,7 @@
 "use client";
 
-import { disconnectSocket } from "@/lib/socket";
+import { pingServer } from "@/api/api";
+import { disconnectSocket } from "@/api/socket";
 import { User } from "@/types/types";
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
@@ -22,6 +23,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
+    pingServer();
     setIsLoading(true);
     const stored = localStorage.getItem("userData");
     if (stored) {

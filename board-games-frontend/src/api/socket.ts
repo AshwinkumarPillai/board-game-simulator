@@ -1,15 +1,14 @@
+import { BACKEND_URL } from "@/utils/constants";
 import { io, Socket } from "socket.io-client";
 
 let socket: Socket | null = null;
-
-const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5002";
 
 export const initializeSocket = (token: string) => {
   if (socket) return socket;
 
   console.log("Initiating socket connection ...");
 
-  socket = io(SOCKET_URL, {
+  socket = io(BACKEND_URL, {
     auth: {
       token,
     },
