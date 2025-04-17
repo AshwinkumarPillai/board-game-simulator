@@ -84,7 +84,7 @@ export default function LoginPage() {
         <button
           onClick={handleLogin}
           disabled={loginClicked}
-          className="w-full py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-transform transform hover:-translate-y-1"
+          className="w-full py-2 cursor-pointer bg-blue-600 rounded-lg hover:bg-blue-700 transition-transform transform hover:-translate-y-1"
         >
           {loginClicked ? <LoadingSpinner /> : "Login"}
         </button>

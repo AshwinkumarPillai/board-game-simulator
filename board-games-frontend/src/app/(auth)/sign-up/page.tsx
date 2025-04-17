@@ -84,7 +84,7 @@ export default function SignupPage() {
         <button
           onClick={handleSignup}
           disabled={registerClicked}
-          className="w-full py-2 bg-green-600 rounded-lg hover:bg-green-700 transition-transform transform hover:-translate-y-1"
+          className="w-full cursor-pointer py-2 bg-green-600 rounded-lg hover:bg-green-700 transition-transform transform hover:-translate-y-1"
         >
           {registerClicked ? <LoadingSpinner /> : "Sign Up"}
         </button>

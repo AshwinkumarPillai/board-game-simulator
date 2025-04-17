@@ -60,7 +60,7 @@ const CreateLobbyPage = () => {
         </div>
         <button
           onClick={handleCreateLobby}
-          className="w-full py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-transform transform hover:-translate-y-1"
+          className="w-full cursor-pointer py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-transform transform hover:-translate-y-1"
         >
           Create Lobby
         </button>

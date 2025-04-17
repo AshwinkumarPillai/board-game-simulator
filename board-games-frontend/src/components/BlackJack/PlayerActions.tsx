@@ -59,14 +59,14 @@ const PlayerActions: React.FC<PlayerActionsProps> = ({
             {blackJackGameData.currentPhase === "playing" && (
               <div className="flex justify-center gap-4">
                 <button
-                  className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 px-6 py-3 rounded-xl font-semibold text-white shadow-lg hover:shadow-teal-500/20 transition-all duration-300 flex items-center gap-2"
+                  className="bg-gradient-to-r cursor-pointer from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 px-6 py-3 rounded-xl font-semibold text-white shadow-lg hover:shadow-teal-500/20 transition-all duration-300 flex items-center gap-2"
                   onClick={() => handlePlayerAction("hit")}
                 >
                   <Hand className="h-5 w-5" />
                   Hit
                 </button>
                 <button
-                  className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 px-6 py-3 rounded-xl font-semibold text-white shadow-lg hover:shadow-pink-500/20 transition-all duration-300 flex items-center gap-2"
+                  className="bg-gradient-to-r cursor-pointer from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 px-6 py-3 rounded-xl font-semibold text-white shadow-lg hover:shadow-pink-500/20 transition-all duration-300 flex items-center gap-2"
                   onClick={() => handlePlayerAction("stand")}
                 >
                   <ShieldCheck className="h-5 w-5" />
@@ -143,85 +143,6 @@ const PlayerActions: React.FC<PlayerActionsProps> = ({
         ))}
       </div>
     </div>
-    // <div className="mt-6">
-    //   <hr />
-    //   <br />
-    //   {blackJackGameData.players[blackJackGameData.currentPlayerIndex]?.id === userData?.id ? (
-    //     <div>
-    //       {/* Betting round */}
-    //       {blackJackGameData.currentPhase === "betting" && (
-    //         <div>
-    //           <label>Place Bet:</label>
-    //           &nbsp;
-    //           <input
-    //             type="number"
-    //             placeholder="Bet Amount"
-    //             min={blackJackGameData.minBet}
-    //             max={blackJackGameData.players[blackJackGameData.currentPlayerIndex].points}
-    //             value={playerBet}
-    //             onChange={handleBetAmountChange}
-    //             className="mr-2 border border-gray-300 rounded-md px-2 py-1 text-white "
-    //           />
-    //           <button
-    //             className="px-3 py-3 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 transition duration-300"
-    //             onClick={handlePlaceBet}
-    //           >
-    //             Place Bet
-    //           </button>
-    //         </div>
-    //       )}
-    //       {blackJackGameData.currentPhase === "playing" && (
-    //         <div>
-    //           <button
-    //             className="px-3 py-3 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 transition duration-300"
-    //             onClick={() => handlePlayerAction("hit")}
-    //           >
-    //             Hit
-    //           </button>
-    //           &nbsp;&nbsp;&nbsp;
-    //           <button
-    //             className="px-3 py-3 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 transition duration-300"
-    //             onClick={() => handlePlayerAction("stand")}
-    //           >
-    //             Stand
-    //           </button>
-    //         </div>
-    //       )}
-    //     </div>
-    //   ) : (
-    //     <div className="text-center">
-    //       Wait for [ {blackJackGameData.players[blackJackGameData.currentPlayerIndex]?.username} ] to finish
-    //       their turn
-    //     </div>
-    //   )}
-    //   <br />
-    //   <hr />
-    //   <br />
-    //   {blackJackGameData.players.map((player) => {
-    //     return (
-    //       <div key={player.id + "player_hand"}>
-    //         <h2>
-    //           {player.username} {player.id === userData?.id && <span>(You)</span>}
-    //         </h2>
-    //         <br />
-    //         {player.hand.map((card, index) => (
-    //           <span key={`player${index}-card${index}`} className={`text-white inline-block m-2 p-2`}>
-    //             <CardImage card={card} />
-    //           </span>
-    //         ))}
-    //         <br />
-    //         <br />
-    //         {player.isBusted && <span className="text-red-600">Busted {":("}</span>}
-    //         {player.isEliminated && (
-    //           <span className="text-red-600">Eliminated. Better luck next time! {":("}</span>
-    //         )}
-    //         <br />
-    //         Sum: {calculateHandValue(player.hand)}
-    //         <div className="w-full border-t border-dashed border-gray-400 my-4"></div>
-    //       </div>
-    //     );
-    //   })}
-    // </div>
   );
 };
 

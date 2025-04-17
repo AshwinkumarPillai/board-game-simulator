@@ -30,7 +30,7 @@ const ShowResultsModal: React.FC<ShowResultsProps> = ({
     <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center">
       <div className="bg-gray-900 text-white rounded-lg p-6 max-w-4xl w-full relative">
         <button
-          className="absolute top-2 right-2 text-white bg-red-500 px-3 py-1 rounded hover:bg-red-600"
+          className="absolute cursor-pointer top-2 right-2 text-white bg-red-500 px-3 py-1 rounded hover:bg-red-600"
           onClick={handleClose}
         >
           {isGameOver ? "Return to Home Screen" : "Close"}

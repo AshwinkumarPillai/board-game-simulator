@@ -25,7 +25,7 @@ export default function Navbar() {
             <span className="text-sm text-gray-300">{userData.username}</span>
             <button
               onClick={logout}
-              className="px-4 py-2 bg-red-600 rounded-lg hover:bg-red-700 transition-transform transform hover:-translate-y-1"
+              className="px-4 py-2 cursor-pointer bg-red-600 rounded-lg hover:bg-red-700 transition-transform transform hover:-translate-y-1"
             >
               Logout
             </button>
